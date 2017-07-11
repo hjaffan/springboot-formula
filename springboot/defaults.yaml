@@ -1,0 +1,15 @@
+{% set home_dir = "/opt/springboot" %}
+spring:
+  config:
+    file_content:
+      JAVA_HOME: "-Xmx256m -Xms128m"
+      LOG_FOLDER: /var/log/spring-boot-app
+      RUN_ARGS: '--spring.application.name=spring-boot-app --spring.config.location={{home_dir}}/spring-boot-app/spring-boot.properties --server.port=8090'
+    file_properies:
+      home_dir: {{ home_dir }}
+      user: springboot
+      group: springboot
+      mode: 0755
+    artifact:
+      url: http://artifacts.com/helloworld/helloworld.jar
+      version: 1

@@ -1,0 +1,9 @@
+{## Start with  defaults from defaults.yaml ##}
+{% import_yaml "springboot/defaults.yaml" as default_settings %}
+
+{## Merge in spring:properties pillar ##}
+{% set salt_settings = salt['pillar.get'](
+    'spring',
+    default=default_settings.spring,
+    merge=True)
+%}
