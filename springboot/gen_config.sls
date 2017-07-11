@@ -4,6 +4,7 @@
   file.managed:
     - user: "root"
     - group: "root"
+    - makedirs: True
     - contents: |
          {% for key, value in spring_settings.config.file_content.items() %}{{ key }}={{ value }}
          {% endfor %}
