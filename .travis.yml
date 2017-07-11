@@ -12,8 +12,8 @@ before_install:
   - sudo mkdir /{etc,srv,/var/{cache,log}}/salt; sudo chown travis /{etc,srv,/var/{cache,log}}/salt
   - cp -r $FORMULA /srv/salt && echo "travis-ci" > /etc/salt/minion_id
   # install dependencies
-  - DEPENDENCIES="apache logrotate vim"
-  - for dep in $DEPENDENCIES; do git clone git://github.com/hjaffan/${dep}-formula; cp -r ${dep}-formula/$dep /srv/salt; done
+  # - DEPENDENCIES="apache logrotate vim"
+  # - for dep in $DEPENDENCIES; do git clone git://github.com/hjaffan/${dep}-formula; cp -r ${dep}-formula/$dep /srv/salt; done
 install:
   - pip install salt==$SALT_VERSION
 before_script:
