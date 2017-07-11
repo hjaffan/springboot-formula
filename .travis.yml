@@ -21,5 +21,7 @@ before_script:
   - states=$(find /srv/salt/$FORMULA -name '*.sls' | while read i; do tmp=$FORMULA.${i##*/}; echo ${tmp%.*}; done | xargs | sed -e 's/ /,/g')
   # See what kind of travis box you're on to help with making your states compatible with travis
   - salt-call grains.items --local
+  - ls -l /srv/salt
+  - ls -l /srv
 script:
-  - salt-call state.apply springboot --local --retcode-passthrough -l error test=True $states
+  - salt-call --local state.apply springboot --retcode-passthrough -l error test=True $states
