@@ -1,32 +1,25 @@
 language: python
-version::
+python:
   - '2.7'
 env:
   - SALT_VERSION="2015.5.6"
   - SALT_VERSION="2015.8.0"
   - SALT_VERSION="2015.8.1"
 before_install:
-  - curl -L http://bootstrap.saltstack.org | sudo sh -s -- stable $SALT_VERSION
+  # name of our formula
+  - tmp=${TRAVIS_REPO_SLUG##*/}; FORMULA=${springboot%%-*}
+  # create directories and put necessary files inside
+  - sudo mkdir /{etc,srv,/var/{cache,log}}/salt; sudo chown travis /{etc,srv,/var/{cache,log}}/salt
+  - cp -r $FORMULA /srv/salt && echo "travis-ci" > /etc/salt/minion_id
+  # install dependencies
+  - DEPENDENCIES="apache logrotate vim"
+  - for dep in $DEPENDENCIES; do git clone git://github.com/hjaffan/${dep}-formula; cp -r ${dep}-formula/$dep /srv/salt; done
 install:
-  # Copy these states
-  - sudo mkdir -p /srv/salt/states
-  - sudo mkdir -p /etc/salt/
-  - sudo cp -r . /srv/salt/states
-  - sudo cp .travis/minion /etc/salt/minion
-  - sudo service salt-minion restart
-
-  # Additional debug help
-  - sudo cat /var/log/salt/*
-
-  # See what kind of travis box you're on
-  - sudo salt-call grains.items --local
+  - pip install salt==$SALT_VERSION
 before_script:
   # find all the *.sls files
   - states=$(find /srv/salt/$FORMULA -name '*.sls' | while read i; do tmp=$FORMULA.${i##*/}; echo ${tmp%.*}; done | xargs | sed -e 's/ /,/g')
   # See what kind of travis box you're on to help with making your states compatible with travis
   - salt-call grains.items --local
-  - ls -l /srv/salt
-  - ls -l /tmp
 script:
-  - sudo salt-call state.show_highstate --local --retcode-passthrough
-  # - salt-call --local state.apply springboot --retcode-passthrough -l error test=True $states
+  - salt-call state.show_sls --local --retcode-passthrough -l error test=True $states
