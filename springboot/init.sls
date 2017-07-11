@@ -1,2 +1,2 @@
 include:
-  - gen_configs
+  - gen_config
