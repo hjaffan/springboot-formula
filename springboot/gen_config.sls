@@ -1,8 +1,6 @@
 {% from "springboot/map.jinja" import spring_settings with context %}
-verify-user:
-  user.present:
-    - uid: springboot
-    - gid: springboot
+sprinboot:
+  user.present
 
 /opt/spring-boot/spring-boot-app/configs.conf:
   file.managed:
