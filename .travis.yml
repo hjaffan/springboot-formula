@@ -7,7 +7,7 @@ env:
   - SALT_VERSION="2015.8.1"
 before_install:
   # name of our formula
-  - tmp=${TRAVIS_REPO_SLUG##*/}; FORMULA=${springboot%%-*}
+  - tmp=${TRAVIS_REPO_SLUG##*/}; FORMULA=springboot
   # create directories and put necessary files inside
   - sudo mkdir /{etc,srv,/var/{cache,log}}/salt; sudo chown travis /{etc,srv,/var/{cache,log}}/salt
   - cp -r $FORMULA /srv/salt && echo "travis-ci" > /etc/salt/minion_id
