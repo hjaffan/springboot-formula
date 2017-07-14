@@ -14,7 +14,7 @@ provisioner:
     top.sls:
       base:
         "*":
-          - gen_props
+          - gen_config
     gen_config.sls:
       spring:
         JAVA_HOME: /urs/java/home
