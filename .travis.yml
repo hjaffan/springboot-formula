@@ -1,33 +1,11 @@
 sudo: required
+
+language: ruby
+
 services:
   - docker
 
-# PREREQUISITES
-install:
-  - pip install PyYAML
-  - pip install virtualenv
-  - |
-    test -e Gemfile || cat <<EOF > Gemfile
-    source 'https://rubygems.org'
-    gem 'rake'
-    gem 'test-kitchen'
-    gem 'kitchen-docker'
-    gem 'kitchen-inspec'
-    gem 'inspec'
-    gem 'kitchen-salt', :git => 'https://github.com/salt-formulas/kitchen-salt.git
+before_install:
   - bundle install
 
-# BUILD MATRIX
-env:
-  - PLATFORM=trevorj/salty-whales:trusty
-  - PLATFORM=trevorj/salty-whales:xenial
-  - PLATFORM=trevorj/salty-whales:xenial-2016.3
-
-# SMOKE TEST
-before_script:
-  - set -o pipefail
-  - make test | tail
-
-# KITCHEN TEST
-script:
-  - bundle exec kitchen test -t tests/integration
+script: bundle exec kitchen verify
