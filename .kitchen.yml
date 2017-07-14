@@ -25,7 +25,7 @@ verifier:
   sudo: true
 
 platforms:
-  - name: centos_6.5_base
+  - name: ubuntu-12.04
 
 suites:
   - name: gen_props
