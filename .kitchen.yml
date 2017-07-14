@@ -1,0 +1,34 @@
+driver:
+  name: docker
+
+provisioner:
+  name: salt_solo
+  log_level: debug
+  require_chef: false
+  formula: springboot
+  state_top:
+    base:
+      '*':
+        - springboot.gen_config
+  pillars:
+    top.sls:
+      base:
+        "*":
+          - gen_props
+    gen_config.sls:
+      spring:
+        JAVA_HOME: /urs/java/home
+        LOG_OPTIONS: /var/log
+
+verifier:
+  name: inspec
+  sudo: true
+
+platforms:
+  - name: centos_6.5_base
+
+suites:
+  - name: gen_props
+    provisioner:
+      pillars-from-files:
+        gen_config.sls: tests/pillar/gen_config.sls

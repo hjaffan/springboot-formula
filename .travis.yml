@@ -1,25 +1,33 @@
-language: python
-python:
-  - '2.7'
-env:
-  - SALT_VERSION="2015.5.6"
-  - SALT_VERSION="2015.8.0"
-  - SALT_VERSION="2015.8.1"
-before_install:
-  # name of our formula
-  - tmp=${TRAVIS_REPO_SLUG##*/}; FORMULA=springboot
-  # create directories and put necessary files inside
-  - sudo mkdir /{etc,srv,/var/{cache,log}}/salt; sudo chown travis /{etc,srv,/var/{cache,log}}/salt
-  - cp -r $FORMULA /srv/salt && echo "travis-ci" > /etc/salt/minion_id
-  # install dependencies
-  # - DEPENDENCIES="apache logrotate vim"
-  # - for dep in $DEPENDENCIES; do git clone git://github.com/hjaffan/${dep}-formula; cp -r ${dep}-formula/$dep /srv/salt; done
+sudo: required
+services:
+  - docker
+
+# PREREQUISITES
 install:
-  - pip install salt==$SALT_VERSION
+  - pip install PyYAML
+  - pip install virtualenv
+  - |
+    test -e Gemfile || cat <<EOF > Gemfile
+    source 'https://rubygems.org'
+    gem 'rake'
+    gem 'test-kitchen'
+    gem 'kitchen-docker'
+    gem 'kitchen-inspec'
+    gem 'inspec'
+    gem 'kitchen-salt', :git => 'https://github.com/salt-formulas/kitchen-salt.git
+  - bundle install
+
+# BUILD MATRIX
+env:
+  - PLATFORM=trevorj/salty-whales:trusty
+  - PLATFORM=trevorj/salty-whales:xenial
+  - PLATFORM=trevorj/salty-whales:xenial-2016.3
+
+# SMOKE TEST
 before_script:
-  # find all the *.sls files
-  - states=$(find /srv/salt/$FORMULA -name '*.sls' | while read i; do tmp=$FORMULA.${i##*/}; echo ${tmp%.*}; done | xargs | sed -e 's/ /,/g')
-  # See what kind of travis box you're on to help with making your states compatible with travis
-  - salt-call grains.items --local
+  - set -o pipefail
+  - make test | tail
+
+# KITCHEN TEST
 script:
-  - salt-call --local state.apply springboot -l error --retcode-passthrough 
+  - bundle exec kitchen test -t tests/integration
