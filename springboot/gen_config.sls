@@ -1,6 +1,11 @@
 {% from "springboot/map.jinja" import spring_settings with context %}
 sprinboot:
-  user.present
+  user.present:
+    - fullname: Springboot
+    - shell: /bin/bash
+    - home: /home/springboot
+    - uid: 4000
+    - gid: 4000
 
 /opt/spring-boot/spring-boot-app/configs.conf:
   file.managed:
