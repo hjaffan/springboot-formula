@@ -13,3 +13,8 @@ spring:
     artifact:
       url: http://artifacts.com/helloworld/helloworld.jar
       version: 1
+  properties:
+    tibco:
+      ems:
+        username: Hilal
+        password: jaffan
