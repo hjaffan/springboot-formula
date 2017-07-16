@@ -1,2 +1,3 @@
 include:
-  - gen_configs
+  - .gen_config
+  - .gen_props

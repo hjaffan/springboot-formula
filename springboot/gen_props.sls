@@ -5,11 +5,11 @@ def run():
   Create Properties File
   '''
   config = {}
-  properties = __pillar__['properties']
+  properties = __pillar__['spring']
   list_to_print = []
   prop = str()
   content = str()
-  for key, value in properties.items():
+  for key, value in properties['properties'].items():
     if isinstance(value, dict):
       prop = continue_loop(key, value)
       list_to_print.append(prop)
@@ -18,7 +18,7 @@ def run():
       list_to_print.append(prop)
   for item in list_to_print:
       content += item + "\n"
-  config['/opt/spring-boot/config.properties'] = {
+  config['/opt/spring-boot/spring-boot-app/config.properties'] = {
      'file.managed': [
          {'user': "root"},
          {'group': "root"},

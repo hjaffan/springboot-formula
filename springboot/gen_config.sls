@@ -1,9 +1,18 @@
-{% set configs = salt['pillar.get']('conf.') %}
+{% from "springboot/map.jinja" import spring_settings with context %}
+# sprinboot:
+#   user.present:
+#     - fullname: Springboot
+#     - shell: /bin/bash
+#     - home: /home/springboot
+#     - uid: 4000
+#     - gid: 4000
 
 /opt/spring-boot/spring-boot-app/configs.conf:
   file.managed:
-    - user: "root"
-    - group: "root"
+    - user: root
+    - group: root
+    - mode: 0755
+    - makedirs: True
     - contents: |
-         {% for key, value in configs.items() %}{{ key }}={{ value }}
+         {% for key, value in spring_settings.config.file_content.items() %}{{ key }}={{ value }}
          {% endfor %}
