@@ -1,5 +1,5 @@
 driver:
-  name: docker
+  name: vagrant
 
 provisioner:
   name: salt_solo
@@ -25,4 +25,4 @@ platforms:
   - name: centos/7
 
 suites:
-  - name: gen_props
+  - name: verify_configs
