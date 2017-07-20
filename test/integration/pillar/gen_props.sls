@@ -1,7 +1,7 @@
 {% set home_dir = "/opt/springboot" %}
 spring:
   properties:
-    tibco:
-      ems:
-        username: Hilal
-        password: jaffan
+    prop1:
+      prop2:
+        username: user
+        password: pass
