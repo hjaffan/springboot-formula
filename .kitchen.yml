@@ -22,7 +22,7 @@ verifier:
   sudo: true
 
 platforms:
-  - name: centos_6.5_base
+  - name: centos/7
 
 suites:
-  - name: gen_props
+  - name: verify_configs

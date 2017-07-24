@@ -11,13 +11,13 @@ def run():
   content = str()
   for key, value in properties['properties'].items():
     if isinstance(value, dict):
-      prop = continue_loop(key, value)
+      prop = continue_loop(key, value, "")
       list_to_print.append(prop)
     else:
       prop = key + "=" + value
       list_to_print.append(prop)
   for item in list_to_print:
-      content += item + "\n"
+      content += item
   config['/opt/spring-boot/spring-boot-app/config.properties'] = {
      'file.managed': [
          {'user': "root"},
@@ -30,11 +30,11 @@ def run():
  }
   return config
 
-def continue_loop(prop_line, dict_object):
+def continue_loop(tree_keys, dict_object, prop_line):
     for key, value in dict_object.items():
         if isinstance(value, dict):
-            prop_line += "." + key
-            return continue_loop(prop_line, value)
+            tree_keys += "." + key
+            return continue_loop(tree_keys, value, prop_line)
         else:
-            prop_line += "." + key + "=" + value
-            return prop_line
+            prop_line += tree_keys + "." + key + " = " + str(value) + "\n"
+    return prop_line

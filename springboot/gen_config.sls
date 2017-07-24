@@ -14,5 +14,5 @@
     - mode: 0755
     - makedirs: True
     - contents: |
-         {% for key, value in spring_settings.config.file_content.items() %}{{ key }}={{ value }}
+         {% for key, value in spring_settings.config.file_content.items() %}{{ key }}="{{ value }}"
          {% endfor %}
